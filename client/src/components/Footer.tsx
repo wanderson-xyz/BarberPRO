@@ -1,5 +1,6 @@
 import React from "react";
-import { Instagram, Facebook, MessageCircle, MapPin, Phone, Mail } from "lucide-react";
+import { Instagram, Facebook, MapPin, Phone, Mail } from "lucide-react";
+import { SiWhatsapp } from "react-icons/si";
 
 const Footer = () => {
   return (
@@ -43,7 +44,7 @@ const Footer = () => {
                 className="text-muted-foreground hover:text-accent transition-colors"
                 data-testid="social-whatsapp"
               >
-                <MessageCircle className="w-5 h-5" />
+                <SiWhatsapp className="w-5 h-5" />
               </a>
             </div>
           </div>

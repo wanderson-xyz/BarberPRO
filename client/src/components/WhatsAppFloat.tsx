@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageCircle } from "lucide-react";
+import { SiWhatsapp } from "react-icons/si";
 
 const WhatsAppFloat = () => {
   const whatsappNumber = "5551987654321";
@@ -21,7 +21,7 @@ const WhatsAppFloat = () => {
         className="bg-green-500 hover:bg-green-600 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-105"
         data-testid="button-whatsapp-float"
       >
-        <MessageCircle className="w-6 h-6 text-white" />
+        <SiWhatsapp className="w-6 h-6 text-white" />
       </a>
     </div>
   );
