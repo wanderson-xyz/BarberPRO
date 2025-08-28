@@ -1,0 +1,112 @@
+Crie uma landing page institucional moderna para uma barbearia, fiel ao layout da imagem enviada como referência.  
+Use as seguintes tecnologias obrigatórias: **React + Vite + TailwindCSS**.  
+O foco deve ser em SEO e conversão de leads (agendamentos).  
+
+### Estrutura do Projeto
+
+- Configure o projeto com Vite + React.
+- Instale e configure TailwindCSS.
+- Estruture os componentes da seguinte forma:
+
+📂 src/components  
+  ├── Navbar.jsx  
+  ├── Hero.jsx  
+  ├── About.jsx  
+  ├── Services.jsx  
+  ├── Pricing.jsx  
+  ├── Team.jsx  
+  ├── AppointmentForm.jsx  
+  ├── Gallery.jsx  
+  ├── Testimonials.jsx  
+  ├── Newsletter.jsx  
+  └── Footer.jsx  
+
+📂 src  
+  ├── App.jsx  
+  ├── main.jsx  
+  └── index.css  
+
+---
+
+### Requisitos de Layout e Seções
+
+1. **Navbar (fixa no topo)**
+   - Logo fictícia: "BarberPro".
+   - Links de navegação: Home, About Us, Services, Pricing, Team, Appointment, Gallery, Testimonials, Contact.
+   - Botão CTA: "Book Now".
+   - Menu hamburguer no mobile.
+
+2. **Hero Section**
+   - Fundo com imagem de barbearia (use Unsplash ou imagens livres).
+   - Título em destaque: "We Are Looking to Make You Handsome."
+   - Subtítulo curto.
+   - Botão CTA: "Book an Appointment".
+
+3. **About Us**
+   - Texto curto e imagem ao lado.
+   - Botão "Learn More".
+
+4. **Services**
+   - Grid de 3 a 4 cards.
+   - Cada card com ícone (lucide-react ou heroicons), título e descrição.
+
+5. **Pricing Plans**
+   - 2 a 3 colunas (Basic, Standard, Premium).
+   - Lista de benefícios.
+   - Valor destacado.
+   - Botão "Choose Plan".
+
+6. **Team**
+   - Grid de barbeiros fictícios.
+   - Nome + função.
+
+7. **Appointment Form**
+   - Campos: Nome, Email, Telefone, Serviço, Data/Hora.
+   - Validação simples em React.
+   - Botão CTA: "Book Now".
+
+8. **Gallery**
+   - Grid de 6 imagens responsivas.
+
+9. **Testimonials**
+   - Slider/carrossel automático (usar Swiper.js ou Embla Carousel).
+   - Nome, foto e comentário.
+
+10. **Newsletter**
+   - Campo email + botão "Subscribe".
+
+11. **Footer**
+   - Links rápidos.
+   - Endereço, telefone, email.
+   - Ícones sociais (Instagram, Facebook, WhatsApp).
+   - Direitos autorais.
+
+---
+
+### Estilo e Identidade Visual
+- Paleta de cores: Preto (#000), Dourado (#FFD700), Branco (#FFF).
+- Tipografia: "Poppins" ou "Montserrat".
+- Hero em tela cheia.
+- Cards com bordas arredondadas e sombras suaves.
+- Botões CTA em dourado com hover elegante.
+
+---
+
+### Funcionalidades Extras (React + JS)
+- **Scroll suave** ao clicar nos links da navbar.
+- **Carrossel** para depoimentos.
+- **Formulário validado** com mensagens de erro.
+- **Menu mobile animado** (framer-motion ou Tailwind transitions).
+
+---
+
+### SEO e Performance
+- Estrutura semântica com `<header>`, `<section>`, `<footer>`.
+- `react-helmet` para meta tags (title, description, keywords).
+- Todas as imagens com atributo `alt`.
+- Mobile-first.
+- Código otimizado para deploy no Vercel.
+
+---
+
+📌 Entregue o código completo com os arquivos React já organizados.  
