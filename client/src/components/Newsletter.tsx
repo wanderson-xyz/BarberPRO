@@ -28,22 +28,29 @@ const Newsletter = () => {
     setIsSubmitting(true);
     
     try {
-      // Here you would typically send the data to your backend
-      console.log("Newsletter subscription:", data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Subscribed!",
-        description: "Thank you for subscribing to our newsletter!",
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
       
-      form.reset();
+      const result = await response.json();
+      
+      if (result.success) {
+        toast({
+          title: "Inscrito!",
+          description: "Obrigado por se inscrever em nossa newsletter!",
+        });
+        form.reset();
+      } else {
+        throw new Error(result.message);
+      }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to subscribe. Please try again.",
+        title: "Erro",
+        description: "Falha ao se inscrever. Tente novamente.",
         variant: "destructive",
       });
     } finally {

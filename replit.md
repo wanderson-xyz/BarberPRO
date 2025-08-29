@@ -20,12 +20,13 @@ The application follows a component-based React architecture with TypeScript for
 - **Responsive Design**: Mobile-first approach with responsive breakpoints
 
 ### Backend Architecture
-Express.js server with TypeScript providing:
+**Updated for Vercel Deployment**: Migrated from Express.js to serverless functions
 
-- **API Routes**: RESTful endpoints with `/api` prefix
-- **Storage Interface**: Abstracted storage layer with in-memory implementation (MemStorage)
-- **User Management**: Basic user CRUD operations with UUID-based IDs
-- **Middleware**: Request logging, JSON parsing, and error handling
+- **Serverless Functions**: API endpoints deployed as Vercel functions in `/api` directory
+- **API Routes**: `/api/appointment`, `/api/contact`, `/api/newsletter` endpoints
+- **Validation**: Zod schema validation in each serverless function
+- **Error Handling**: Proper HTTP status codes and error responses
+- **Form Integration**: Real API calls from frontend forms to serverless functions
 
 ### Data Storage Solutions
 - **Database**: PostgreSQL configured through Drizzle ORM

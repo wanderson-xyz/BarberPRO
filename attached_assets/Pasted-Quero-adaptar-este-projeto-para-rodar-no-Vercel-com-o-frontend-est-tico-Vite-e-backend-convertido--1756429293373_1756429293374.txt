@@ -1,0 +1,182 @@
+Quero adaptar este projeto para rodar no Vercel com o frontend estático (Vite) e backend convertido em funções serverless (sem Express rodando em servidor dedicado).
+Faça as alterações a seguir exatamente:
+
+1) Estrutura de pastas e build
+
+Mantenha o frontend como está (Vite, Tailwind, React, etc.).
+
+Crie uma pasta api/ na raiz do projeto (mesmo nível do package.json).
+
+O vite.config.ts já gera a build em dist/ (saída estática). Não altere.
+
+2) Migrar rotas do Express para serverless
+
+Baseie-se em server/index.ts e/ou qualquer rota equivalente (como login, autenticação ou contato).
+
+Converta cada rota importante do Express para funções dentro de api/.
+
+Exemplo: se existir uma rota app.post("/api/contact", ...), crie api/contact.ts com a mesma lógica de validação/resposta, mas sem usar express.
+
+Modelo para seguir (ajuste para cada rota):
+
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório"),
+  phone: z.string().min(1, "Telefone é obrigatório"),
+  message: z.string().min(1, "Mensagem é obrigatória"),
+});
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ success: false, message: "Método não permitido" });
+  }
+
+  try {
+    const validated = contactSchema.parse(req.body);
+
+    console.log("Nova submissão:", validated);
+
+    return res.status(200).json({
+      success: true,
+      message: "Mensagem enviada com sucesso"
+    });
+  } catch (error: any) {
+    if (error?.name === "ZodError") {
+      return res.status(400).json({ success: false, message: "Erro de validação", errors: error.errors });
+    }
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Erro interno do servidor" });
+  }
+}
+
+
+Não importe nem use express nas funções serverless.
+
+O frontend já chama rotas como fetch("/api/..."), então mantenha os mesmos paths.
+
+3) Ajustar tsconfig.json
+
+Inclua a pasta api e os tipos do Vercel.
+Edite para que contenha pelo menos:
+
+{
+  "include": ["src/**/*", "api/**/*"],
+  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "ESNext",
+    "strict": true,
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "types": ["node", "vite/client", "@vercel/node"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+
+4) Ajustar package.json
+
+Remova qualquer build do servidor (esbuild server/index.ts, etc.).
+
+Mantenha apenas a build do Vite.
+
+Atualize os scripts para:
+
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview",
+  "check": "tsc",
+  "db:push": "drizzle-kit push"
+},
+"engines": {
+  "node": ">=18"
+},
+"devDependencies": {
+  "@vercel/node": "^3.2.20"
+}
+
+
+Se existirem outras chaves além de scripts/engines/devDependencies, mantenha-as.
+
+Não remova dependências do frontend (react, radix-ui, framer-motion, etc.).
+
+5) Criar vercel.json
+
+Na raiz, crie:
+
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/**/*.ts", "use": "@vercel/node" },
+    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
+
+
+O fallback /(.*) -> /index.html garante que o SPA (usa wouter) funcione ao recarregar rotas internas.
+
+6) Conferências rápidas
+
+O frontend deve continuar chamando /api/....
+
+O zod já está instalado → pode ser usado para validações.
+
+O backend antigo (server/index.ts) não será usado em produção. Não apague, apenas ignore.
+
+Remova qualquer referência a iniciar servidor express no deploy.
+
+7) Atualizar README.md
+
+Adicione uma seção com instruções de deploy no Vercel:
+
+## Deploy no Vercel
+
+1. Faça push do repositório no GitHub/GitLab/Bitbucket.
+2. No Vercel, crie um novo projeto a partir do repositório.
+3. Configure:
+   - Install Command: npm install
+   - Build Command: npm run build
+   - Output Directory: dist
+4. Confirme que o arquivo vercel.json está na raiz.
+5. Deploy automático será feito.
+
+### Testes
+- Frontend: abra a URL principal.
+- API: 
+  curl -X POST https://SEU-PROJETO.vercel.app/api/contact \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Fulano","phone":"9999-9999","message":"oi"}'
+  → Deve retornar `{ "success": true, "message": "Mensagem enviada com sucesso" }`.
+
+8) Entregáveis finais
+
+api/contact.ts (e outras rotas migradas do Express).
+
+tsconfig.json atualizado.
+
+package.json com scripts ajustados.
+
+vercel.json criado.
+
+README.md com instruções de deploy.
+
+Tudo deve continuar funcionando localmente com:
+
+npm run dev
+
+
+E no Vercel com build estática + funções serverless.

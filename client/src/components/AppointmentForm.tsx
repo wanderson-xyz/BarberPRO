@@ -39,22 +39,29 @@ const AppointmentForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Here you would typically send the data to your backend
-      console.log("Appointment data:", data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Appointment Booked!",
-        description: "We will contact you soon to confirm your appointment.",
+      const response = await fetch("/api/appointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
       
-      form.reset();
+      const result = await response.json();
+      
+      if (result.success) {
+        toast({
+          title: "Agendamento Realizado!",
+          description: "Entraremos em contato em breve para confirmar seu horário.",
+        });
+        form.reset();
+      } else {
+        throw new Error(result.message);
+      }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to book appointment. Please try again.",
+        title: "Erro",
+        description: "Falha ao realizar agendamento. Tente novamente.",
         variant: "destructive",
       });
     } finally {
